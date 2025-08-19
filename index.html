@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Utility Hub</title>
+    <meta name="description" content="A handy set of everyday tools: password generator, unit converter, markdown preview, Pomodoro timer, and QR code generator." />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="app-header">
+        <div class="brand">
+            <div class="logo">🧰</div>
+            <div class="title">
+                <h1>Utility Hub</h1>
+                <p class="tagline">Useful tools in one clean interface</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button id="themeToggle" class="btn btn-ghost" title="Toggle dark mode">🌙</button>
+            <a class="btn btn-primary" href="#password">Get Started</a>
+        </div>
+    </header>
+
+    <nav class="tabbar" aria-label="Primary">
+        <button class="tab active" data-section="password">Password</button>
+        <button class="tab" data-section="convert">Convert</button>
+        <button class="tab" data-section="markdown">Markdown</button>
+        <button class="tab" data-section="pomodoro">Pomodoro</button>
+        <button class="tab" data-section="qrcode">QR Code</button>
+    </nav>
+
+    <main class="container">
+        <!-- Password Generator -->
+        <section id="password" class="panel active" aria-labelledby="tab-password">
+            <div class="panel-header">
+                <h2>Secure Password Generator</h2>
+                <p>Create strong, unique passwords with fine-grained options.</p>
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="field">
+                        <label for="pwLength">Length: <span id="pwLengthValue">16</span></label>
+                        <input type="range" id="pwLength" min="8" max="64" value="16" />
+                    </div>
+                    <div class="options-grid">
+                        <label class="checkbox"><input type="checkbox" id="optLower" checked /> Lowercase</label>
+                        <label class="checkbox"><input type="checkbox" id="optUpper" checked /> Uppercase</label>
+                        <label class="checkbox"><input type="checkbox" id="optNumber" checked /> Numbers</label>
+                        <label class="checkbox"><input type="checkbox" id="optSymbol" /> Symbols</label>
+                        <label class="checkbox"><input type="checkbox" id="optNoAmbig" /> Exclude ambiguous (O0Il)</label>
+                        <label class="checkbox"><input type="checkbox" id="optNoRepeat" /> Avoid repeats</label>
+                    </div>
+                    <div class="field">
+                        <label for="pwOutput">Password</label>
+                        <div class="input-group">
+                            <input type="text" id="pwOutput" readonly />
+                            <button id="btnGenerate" class="btn">Generate</button>
+                            <button id="btnCopy" class="btn btn-ghost" title="Copy to clipboard">Copy</button>
+                        </div>
+                    </div>
+                    <div class="strength">
+                        <div id="strengthBar" class="bar"></div>
+                        <span id="strengthText" class="text">Strength</span>
+                    </div>
+                </div>
+                <div class="card info">
+                    <h3>Tips</h3>
+                    <ul>
+                        <li>Use at least 16 characters.</li>
+                        <li>Mix character types for stronger passwords.</li>
+                        <li>Use unique passwords per site, stored in a password manager.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Unit Converter -->
+        <section id="convert" class="panel" aria-labelledby="tab-convert">
+            <div class="panel-header">
+                <h2>Unit Converter</h2>
+                <p>Convert between common units for length, weight, temperature, and volume.</p>
+            </div>
+            <div class="card">
+                <div class="converter-grid">
+                    <div class="field">
+                        <label for="convCategory">Category</label>
+                        <select id="convCategory">
+                            <option value="length" selected>Length</option>
+                            <option value="weight">Weight</option>
+                            <option value="temperature">Temperature</option>
+                            <option value="volume">Volume</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="convFrom">From</label>
+                        <select id="convFrom"></select>
+                    </div>
+                    <div class="field">
+                        <label for="convTo">To</label>
+                        <select id="convTo"></select>
+                    </div>
+                    <div class="field">
+                        <label for="convValue">Value</label>
+                        <input type="number" id="convValue" value="1" step="any" />
+                    </div>
+                    <div class="field">
+                        <label for="convResult">Result</label>
+                        <input type="text" id="convResult" readonly />
+                    </div>
+                </div>
+                <div class="actions">
+                    <button id="btnSwap" class="btn btn-ghost" title="Swap units">Swap</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Markdown Preview -->
+        <section id="markdown" class="panel" aria-labelledby="tab-markdown">
+            <div class="panel-header">
+                <h2>Markdown Preview</h2>
+                <p>Write on the left, see the formatted preview on the right.</p>
+            </div>
+            <div class="split">
+                <div class="pane">
+                    <label for="mdInput" class="sr-only">Markdown input</label>
+                    <textarea id="mdInput" spellcheck="false" placeholder="# Hello World\n\n- Write Markdown here\n- It will render on the right"></textarea>
+                </div>
+                <div class="pane preview" id="mdPreview" aria-live="polite"></div>
+            </div>
+        </section>
+
+        <!-- Pomodoro Timer -->
+        <section id="pomodoro" class="panel" aria-labelledby="tab-pomodoro">
+            <div class="panel-header">
+                <h2>Pomodoro Timer</h2>
+                <p>Stay focused with timed work and break intervals.</p>
+            </div>
+            <div class="card">
+                <div class="pomodoro-grid">
+                    <div class="field">
+                        <label for="workMinutes">Work (min)</label>
+                        <input type="number" id="workMinutes" min="1" value="25" />
+                    </div>
+                    <div class="field">
+                        <label for="shortBreak">Short Break (min)</label>
+                        <input type="number" id="shortBreak" min="1" value="5" />
+                    </div>
+                    <div class="field">
+                        <label for="longBreak">Long Break (min)</label>
+                        <input type="number" id="longBreak" min="1" value="15" />
+                    </div>
+                    <div class="field">
+                        <label for="intervals">Intervals until long break</label>
+                        <input type="number" id="intervals" min="1" value="4" />
+                    </div>
+                </div>
+                <div class="timer-display">
+                    <div id="timerLabel" class="label">Ready</div>
+                    <div id="timer" class="time">25:00</div>
+                </div>
+                <div class="actions">
+                    <button id="btnStart" class="btn">Start</button>
+                    <button id="btnPause" class="btn btn-ghost">Pause</button>
+                    <button id="btnReset" class="btn btn-ghost">Reset</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- QR Code Generator -->
+        <section id="qrcode" class="panel" aria-labelledby="tab-qrcode">
+            <div class="panel-header">
+                <h2>QR Code Generator</h2>
+                <p>Turn any text or link into a scannable QR code.</p>
+            </div>
+            <div class="card qr-grid">
+                <div class="field">
+                    <label for="qrText">Text or URL</label>
+                    <input type="text" id="qrText" placeholder="https://example.com" />
+                </div>
+                <div class="field">
+                    <label for="qrSize">Size (px)</label>
+                    <input type="number" id="qrSize" value="256" min="64" max="512" step="32" />
+                </div>
+                <div class="actions">
+                    <button id="btnQrGenerate" class="btn">Generate</button>
+                    <button id="btnQrDownload" class="btn btn-ghost">Download</button>
+                </div>
+                <div id="qrOutput" class="qr-output" aria-live="polite"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <p>Built with ❤️ for productivity. No tracking, runs in your browser.</p>
+    </footer>
+
+    <!-- Third-party libs -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <!-- App logic -->
+    <script src="./script.js"></script>
+</body>
+</html>
+
